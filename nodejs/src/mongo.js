@@ -89,7 +89,7 @@ app.listen(port, () => {
 
 let nodes = [];
 
-var currentTime = dayjs().format;
+var currentTime = dayjs().format();
 
 var nodeID = Math.floor(Math.random() * (100 - 1 + 1) + 1);
 toSend = { "hostname": myhostname, "status": "alive", "id": nodeID, "time": currentTime };
@@ -156,7 +156,7 @@ function subscriber() {
         const nodeRecevied = JSON.parse(msg.content.toString());
         const check_id = nodes.some(i => i.id === nodeRecevied.id);
         const check_host = nodes.some(j => j.id === nodeRecevied.hostname);
-        var now = dayjs().format;
+        var now = dayjs().format();
 
 
 
