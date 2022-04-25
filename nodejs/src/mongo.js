@@ -88,7 +88,7 @@ app.listen(port, () => {
 })
 
 let nodes = [];
-
+dayjs.locale('uk')
 var currentTime = dayjs();
 
 var nodeID = Math.floor(Math.random() * (100 - 1 + 1) + 1);
@@ -128,9 +128,9 @@ setInterval(function () {
   });
 
 }, 1000);
-setInterval(function () { sub() }, 5000);
+setInterval(function () { subscriber() }, 5000);
 
-function sub() {
+function subscriber() {
 
   var amqp = require('amqplib/callback_api');
 
