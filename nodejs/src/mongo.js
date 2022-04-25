@@ -102,7 +102,7 @@ setInterval(function () {
   var amqp = require('amqplib/callback_api');
 
 
-  amqp.connect('amqp://test:test@cloud-course-work_haproxy_1', function (error0, connection) {
+  amqp.connect('amqp://test:test@6130_cloudwork_haproxy_1', function (error0, connection) {
     if (error0) {
       throw error0;
     }
@@ -134,7 +134,7 @@ function sub() {
 
   var amqp = require('amqplib/callback_api');
 
-  amqp.connect('amqp://test:test@cloud-course-work_haproxy_1', function (error0, connection) {
+  amqp.connect('amqp://test:test@6130_cloudwork_haproxy_1', function (error0, connection) {
     if (error0) {
       throw error0;
     }
