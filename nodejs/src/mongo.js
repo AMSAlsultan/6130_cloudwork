@@ -18,7 +18,6 @@ const app = express()
 const port = 3000
 
 var os = require("os");
-const { setTimeout } = require('timers/promises');
 
 var myhostname = os.hostname();
 
@@ -90,10 +89,10 @@ app.listen(port, () => {
 
 let nodes = [];
 
-var Time = dayjs();
+var currentTime = dayjs();
 
 var nodeID = Math.floor(Math.random() * (100 - 1 + 1) + 1);
-toSend = { "hostname": myhostname, "status": "alive", "id": nodeID, "time": Time };
+toSend = { "hostname": myhostname, "status": "alive", "id": nodeID, "time": currentTime };
 
 
 
@@ -111,7 +110,7 @@ setInterval(function () {
       if (error1) {
         throw error1;
       }
-      var queue = 'nodes_containers';
+      var queue = 'hello';
 
 
       channel.assertQueue(queue, {
@@ -129,9 +128,9 @@ setInterval(function () {
   });
 
 }, 1000);
+setInterval(function () { sub() }, 5000);
 
-
-function subscriber() {
+function sub() {
 
   var amqp = require('amqplib/callback_api');
 
@@ -144,7 +143,7 @@ function subscriber() {
         throw error1;
       }
 
-      var queue = 'nodes_containers';
+      var queue = 'hello';
 
       channel.assertQueue(queue, {
         durable: false
@@ -155,22 +154,20 @@ function subscriber() {
       channel.consume(queue, function (msg) {
         console.log(" [x] Received %s", msg.content.toString());
         const nodeRecevied = JSON.parse(msg.content.toString());
-        const check_id = nodes.some(i => i.id === nodeRecevied.id);
-        const check_host = nodes.some(j => j.id === nodeRecevied.hostname);
-        var now = dayjs();
 
 
-
-        if (!check_id && !check_host) nodes.push(nodeRecevied);
-
-        // nodes.find(x => x.id === nodeRecevied.id).time = now;
-
-        else {
-          // if it doesnt exist we will update the node
-          nodes.find(x => x.id === nodeRecevied.id).time = now;
+        // update the time of the node, we are using moment library, since it is quite useful for time
+        if (nodes.some(i => i.nodeID === nodeRecevied.nodeID) && nodes.some(j => j.hostname === nodeRecevied.hostname)) {
+          let check = nodes.map(i => i.id).includes(nodeRecevied.id);
+          console.log(check);
 
         }
-        get_nodes();
+        else {
+          // if it doesnt exist we will update the node
+          nodes.push(nodeRecevied);
+
+        }
+        print_nodes();
 
       }, {
         noAck: true
@@ -179,11 +176,11 @@ function subscriber() {
   });
 
 }
-setTimeout(function () { subscriber() }, 5000);
-function get_nodes() {
+
+
+function print_nodes() {
 
   console.log("This are the current nodes : ", nodes);
-
 
 }
 
@@ -191,15 +188,5 @@ function get_nodes() {
 
 
 
-
-
 var url = 'http://192.168.56.10:2375';
-
-
-
-
-
-
-
-
 
