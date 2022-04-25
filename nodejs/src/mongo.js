@@ -157,7 +157,7 @@ function sub() {
 
 
         // update the time of the node, we are using moment library, since it is quite useful for time
-        if (nodes.some(i => i.nodeID === container.nodeID) && nodes.some(j => j.hostname === container.hostname)) {
+        if (nodes.some(i => i.nodeID === nodeRecevied.nodeID) && nodes.some(j => j.hostname === nodeRecevied.hostname)) {
           let check = nodes.map(i => i.id).includes(nodeRecevied.id);
           console.log(check);
 
