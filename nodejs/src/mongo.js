@@ -171,7 +171,7 @@ setTimeout(function () {
           nodes.push(nodeRecevied);
 
         }
-        console.log(nodes);
+
 
       }, {
         noAck: true
@@ -182,12 +182,14 @@ setTimeout(function () {
 }, 5000);
 
 
-function get_leader() {
+function get_nodes() {
 
   console.log("This are the current nodes : ", nodes);
 
 
 }
+
+setInterval(get_nodes(), 7000);
 
 
 
