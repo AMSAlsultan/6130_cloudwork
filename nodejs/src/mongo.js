@@ -92,7 +92,7 @@ let nodes = [];
 var currentTime = dayjs().format();
 
 var nodeID = Math.floor(Math.random() * (100 - 1 + 1) + 1);
-toSend = { "hostname": myhostname, "status": "alive", "id": nodeID, "time": currentTime };
+toSend = { "hostname": myhostname, "id": nodeID, "time": currentTime };
 
 
 
@@ -156,20 +156,14 @@ function subscriber() {
         const nodeRecevied = JSON.parse(msg.content.toString());
         const check_id = nodes.some(i => i.id === nodeRecevied.id);
         const check_host = nodes.some(j => j.id === nodeRecevied.hostname);
-        var now = dayjs().format();
+
 
 
 
         if (!check_id && !check_host) nodes.push(nodeRecevied);
 
-        // nodes.find(x => x.id === nodeRecevied.id).time = now;
 
-        else {
-          // if it doesnt exist we will update the node
-          nodes.find(x => x.id === nodeRecevied.id).time = now;
-
-        }
-        print_nodes();
+        update_nodes(nodeRecevied);
 
       }, {
         noAck: true
@@ -180,8 +174,9 @@ function subscriber() {
 }
 
 
-function print_nodes() {
-
+function update_nodes(node) {
+  var now = dayjs().format();
+  nodes.find(x => x.id === node.id).time = now;
   console.log("This are the current nodes : ", nodes);
 
 }
