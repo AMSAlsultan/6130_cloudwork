@@ -185,7 +185,7 @@ setInterval(function () {
   let currentLeader = set_leader();
   console.log("Id of the leader:", currentLeader.id);
   nodes.forEach(element => {
-    if (element === currentLeader) element.leader = true
+    if (element === currentLeader.id) element.leader = true
     element.leader = false;
 
   });
