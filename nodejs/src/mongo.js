@@ -89,10 +89,10 @@ app.listen(port, () => {
 
 let nodes = [];
 
-var currentTime = dayjs();
+var Time = dayjs();
 
 var nodeID = Math.floor(Math.random() * (100 - 1 + 1) + 1);
-toSend = { "hostname": myhostname, "status": "alive", "id": nodeID, "time": currentTime };
+toSend = { "hostname": myhostname, "status": "alive", "id": nodeID, "time": Time };
 
 
 
@@ -110,7 +110,7 @@ setInterval(function () {
       if (error1) {
         throw error1;
       }
-      var queue = 'hello';
+      var queue = 'nodes_containers';
 
 
       channel.assertQueue(queue, {
@@ -128,9 +128,9 @@ setInterval(function () {
   });
 
 }, 1000);
-setInterval(function () { sub() }, 5000);
 
-function sub() {
+
+setInterval(function () {
 
   var amqp = require('amqplib/callback_api');
 
@@ -143,7 +143,7 @@ function sub() {
         throw error1;
       }
 
-      var queue = 'hello';
+      var queue = 'nodes_containers';
 
       channel.assertQueue(queue, {
         durable: false
@@ -154,12 +154,16 @@ function sub() {
       channel.consume(queue, function (msg) {
         console.log(" [x] Received %s", msg.content.toString());
         const nodeRecevied = JSON.parse(msg.content.toString());
+        let check_id = nodes.map(i => i.id).includes(nodeRecevied.id);
+        let check_host = nodes.map(i => i.id).includes(nodeRecevied.hostname);
 
 
         // update the time of the node, we are using moment library, since it is quite useful for time
-        if (nodes.some(i => i.nodeID === nodeRecevied.nodeID) && nodes.some(j => j.hostname === nodeRecevied.hostname)) {
-          let check = nodes.map(i => i.id).includes(nodeRecevied.id);
-          console.log(check);
+        if (check_host == true && check_id == true) {
+          var now = dayjs();
+          nodes.find(x => x.id === nodeRecevied.id).time = now;
+
+
 
         }
         else {
@@ -167,7 +171,7 @@ function sub() {
           nodes.push(nodeRecevied);
 
         }
-        print_nodes();
+        console.log(nodes);
 
       }, {
         noAck: true
@@ -175,12 +179,13 @@ function sub() {
     });
   });
 
-}
+}, 5000);
 
 
-function print_nodes() {
+function get_leader() {
 
   console.log("This are the current nodes : ", nodes);
+
 
 }
 
