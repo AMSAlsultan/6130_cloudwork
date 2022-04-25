@@ -130,7 +130,7 @@ setInterval(function () {
 
 }, 1000);
 
-setTimeout(function () { subscriber() }, 5000);
+
 function subscriber() {
 
   var amqp = require('amqplib/callback_api');
@@ -170,7 +170,7 @@ function subscriber() {
           nodes.find(x => x.id === nodeRecevied.id).time = now;
 
         }
-
+        get_nodes();
 
       }, {
         noAck: true
@@ -179,8 +179,7 @@ function subscriber() {
   });
 
 }
-
-
+setTimeout(function () { subscriber() }, 5000);
 function get_nodes() {
 
   console.log("This are the current nodes : ", nodes);
@@ -188,7 +187,7 @@ function get_nodes() {
 
 }
 
-setTimeout(function () { get_nodes() }, 7000);
+
 
 
 
