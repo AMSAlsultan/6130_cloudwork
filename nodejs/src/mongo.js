@@ -18,6 +18,7 @@ const app = express()
 const port = 3000
 
 var os = require("os");
+const { setTimeout } = require('timers/promises');
 
 var myhostname = os.hostname();
 
@@ -129,8 +130,8 @@ setInterval(function () {
 
 }, 1000);
 
-
-setTimeout(function () {
+setTimeout(function () { subscriber() }, 5000);
+function subscriber() {
 
   var amqp = require('amqplib/callback_api');
 
@@ -154,21 +155,19 @@ setTimeout(function () {
       channel.consume(queue, function (msg) {
         console.log(" [x] Received %s", msg.content.toString());
         const nodeRecevied = JSON.parse(msg.content.toString());
-        let check_id = nodes.map(i => i.id).includes(nodeRecevied.id);
-        let check_host = nodes.map(i => i.id).includes(nodeRecevied.hostname);
-
-
-        // update the time of the node, we are using moment library, since it is quite useful for time
-        if (check_host == true && check_id == true) {
-          var now = dayjs();
-          nodes.find(x => x.id === nodeRecevied.id).time = now;
+        const check_id = nodes.some(i => i.id === nodeRecevied.id);
+        const check_host = nodes.some(j => j.id === nodeRecevied.hostname);
+        var now = dayjs();
 
 
 
-        }
+        if (!check_id && !check_host) nodes.push(nodeRecevied);
+
+        // nodes.find(x => x.id === nodeRecevied.id).time = now;
+
         else {
           // if it doesnt exist we will update the node
-          nodes.push(nodeRecevied);
+          nodes.find(x => x.id === nodeRecevied.id).time = now;
 
         }
 
@@ -179,7 +178,7 @@ setTimeout(function () {
     });
   });
 
-}, 5000);
+}
 
 
 function get_nodes() {
@@ -189,7 +188,7 @@ function get_nodes() {
 
 }
 
-setInterval(function () { get_nodes() }, 7000);
+setTimeout(function () { get_nodes() }, 7000);
 
 
 
