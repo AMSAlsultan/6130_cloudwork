@@ -45,29 +45,30 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var Schema = mongoose.Schema;
 
-var clientsSchema = new Schema({
-  AccountId: Number,
+var usersSchema = new Schema({
+  _Id: Number,
   userName: String,
-  title_id: Number,
+  titleID: Number,
   userAction: String,
   point_interaction: String,
   type_interaction: Number,
-  date_time: Date
+  dateTime: Date
+
 });
 
-var clientsSchemal = mongoose.model('Client', clientsSchema, 'Client');
+var usersModel = mongoose.model('Client', usersSchema, 'Client');
 
 
 
 app.get('/', (req, res) => {
-  clientsModel.find({}, 'Get users data', (err, client) => {
+  usersModel.find({}, 'Get users data', (err, user) => {
     if (err) return handleError(err);
-    res.send(JSON.stringify(client))
+    res.send(JSON.stringify(user))
   })
 })
 
 app.post('/', (req, res) => {
-  var awesome_instance = new SomeModel(req.body);
+  var awesome_instance = new usersModel(req.body);
   awesome_instance.save(function (err) {
     if (err) res.send('Error');
     res.send(JSON.stringify(req.body))
@@ -157,12 +158,7 @@ function subscriber() {
         const check_id = nodes.some(i => i.id === nodeRecevied.id);
         const check_host = nodes.some(j => j.id === nodeRecevied.hostname);
 
-
-
-
         if (!check_id && !check_host) nodes.push(nodeRecevied);
-
-
         update_nodes(nodeRecevied);
 
       }, {
