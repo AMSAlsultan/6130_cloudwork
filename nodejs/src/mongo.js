@@ -182,7 +182,14 @@ function update_nodes(node) {
 }
 
 setInterval(function () {
-  console.log("Id of the leader:", set_leader());
+  let currentLeader = set_leader();
+  console.log("Id of the leader:", currentLeader.id);
+  nodes.forEach(element => {
+    if (element === currentLeader) element.leader = true
+    element.leader = false;
+
+  });
+
 }, 6000)
 
 function set_leader() {
