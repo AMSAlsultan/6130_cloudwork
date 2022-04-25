@@ -189,7 +189,7 @@ function get_nodes() {
 
 }
 
-setInterval(get_nodes(), 7000);
+setInterval(function () { get_nodes() }, 7000);
 
 
 
