@@ -181,6 +181,17 @@ function update_nodes(node) {
 
 }
 
+setInterval(function () {
+  console.log("Id of the leader:", set_leader());
+}, 6000)
+
+function set_leader() {
+  const max = nodes.reduce(function (prev, current) {
+    return (prev.id > current.id) ? prev : current
+  })
+  return max
+}
+
 
 
 
