@@ -130,7 +130,7 @@ setInterval(function () {
 }, 1000);
 
 
-setInterval(function () {
+setTimeout(function () {
 
   var amqp = require('amqplib/callback_api');
 
