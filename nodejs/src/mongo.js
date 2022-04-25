@@ -154,17 +154,19 @@ function sub() {
       channel.consume(queue, function (msg) {
         console.log(" [x] Received %s", msg.content.toString());
         const nodeRecevied = JSON.parse(msg.content.toString());
+        const check_id = nodes.some(i => i.id === nodeRecevied.id);
+        const check_host = nodes.some(j => j.id === nodeRecevied.hostname);
+        var now = dayjs();
 
 
-        // update the time of the node, we are using moment library, since it is quite useful for time
-        if (nodes.some(i => i.nodeID === nodeRecevied.nodeID) && nodes.some(j => j.hostname === nodeRecevied.hostname)) {
-          let check = nodes.map(i => i.id).includes(nodeRecevied.id);
-          console.log(check);
 
-        }
+        if (!check_id && !check_host) nodes.push(nodeRecevied);
+
+        // nodes.find(x => x.id === nodeRecevied.id).time = now;
+
         else {
           // if it doesnt exist we will update the node
-          nodes.push(nodeRecevied);
+          nodes.find(x => x.id === nodeRecevied.id).time = now;
 
         }
         print_nodes();
