@@ -193,6 +193,7 @@ setInterval(function () {
 }, 6000)
 
 function set_leader() {
+
   const max = nodes.reduce(function (prev, current) {
     return (prev.id > current.id) ? prev : current
   })
