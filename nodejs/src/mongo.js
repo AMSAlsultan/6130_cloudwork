@@ -61,7 +61,7 @@ var usersModel = mongoose.model('Client', usersSchema, 'client');
 
 
 app.get('/', (req, res) => {
-  usersModel.find({}, 'Get users data', (err, client) => {
+  usersModel.find({}, (err, client) => {
     if (err) return handleError(err);
     res.send(JSON.stringify(client))
   })
