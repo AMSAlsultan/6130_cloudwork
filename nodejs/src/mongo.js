@@ -191,6 +191,9 @@ setInterval(function () {
 
 
     });
+    if (toSend.id == currentLeader) {
+      checkNodes();
+    }
   }
 
 }, 6000)
@@ -203,6 +206,16 @@ function set_leader() {
   return max
 }
 
+function checkNodes() {
+  const date1 = dayjs();
+  nodes.forEach((e) => {
+    const date2 = e.time
+    let difference = date1.diff(date2, 'minute');
+    if (difference >= 2) {
+      e.status = "stop";
+    }
+  });
+}
 
 
 
