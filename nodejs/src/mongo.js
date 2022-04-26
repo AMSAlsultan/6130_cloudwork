@@ -68,8 +68,8 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-  var awesome_instance = new usersModel(req.body);
-  awesome_instance.save(function (err) {
+  var new_user_instance = new usersModel(req.body);
+  new_user_instance.save(function (err) {
     if (err) res.send('Error');
     res.send(JSON.stringify(req.body))
   });
