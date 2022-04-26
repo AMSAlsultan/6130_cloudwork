@@ -160,7 +160,7 @@ function subscriber() {
         const check_id = nodes.some(i => i.id === nodeRecevied.id);
         const check_host = nodes.some(j => j.id === nodeRecevied.hostname);
 
-        if (!check_id && !check_host) nodes.push(nodeRecevied);
+        if (!check_id && !check_host && nodes.length < 3) nodes.push(nodeRecevied);
         update_nodes(nodeRecevied);
 
       }, {
