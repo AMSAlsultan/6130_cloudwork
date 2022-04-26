@@ -180,15 +180,18 @@ function update_nodes(node) {
 }
 
 setInterval(function () {
-  let currentLeader = set_leader();
-  console.log("Id of the leader:", currentLeader.id);
-  nodes.forEach(element => {
-    if (element.id === currentLeader.id) {
-      element.leader = true
-    } else element.leader = false;
+
+  if (typeof nodes !== 'undefined' && nodes.length > 0) {
+    let currentLeader = set_leader();
+    console.log("Id of the leader:", currentLeader.id);
+    nodes.forEach(element => {
+      if (element.id === currentLeader.id) {
+        element.leader = true
+      } else element.leader = false;
 
 
-  });
+    });
+  }
 
 }, 6000)
 
