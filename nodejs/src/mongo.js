@@ -56,7 +56,7 @@ var usersSchema = new Schema({
 
 });
 
-var usersModel = mongoose.model('Client', usersSchema, 'Client');
+var usersModel = mongoose.model('Client', usersSchema, 'client');
 
 
 
