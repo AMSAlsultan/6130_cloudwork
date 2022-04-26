@@ -209,7 +209,7 @@ function set_leader() {
 function checkNodes() {
   console.log("You are on the leader")
   const date1 = dayjs();
-  nodes.forEach((e) => {
+  nodes.forEach(e => {
     const date2 = e.time
     let difference = date1.diff(date2, 'minute');
     console.log("This is the differnece", difference);
