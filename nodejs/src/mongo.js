@@ -191,7 +191,7 @@ setInterval(function () {
 
 
     });
-    if (toSend.id == currentLeader) {
+    if (toSend.id == currentLeader.id) {
       checkNodes();
     }
   }
