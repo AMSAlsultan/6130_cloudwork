@@ -156,10 +156,12 @@ function subscriber() {
 
       channel.consume(queue, function (msg) {
         console.log(" [x] Received %s", msg.content.toString());
+        // convert the message received into an object
         const nodeRecevied = JSON.parse(msg.content.toString());
+        // check if the id and host exits on the array
         const check_id = nodes.some(i => i.id === nodeRecevied.id);
         const check_host = nodes.some(j => j.id === nodeRecevied.hostname);
-
+        // if it doesn't exist it will be push it into the array
         if (!check_id && !check_host && nodes.length < 3) nodes.push(nodeRecevied);
         update_nodes(nodeRecevied);
 
@@ -173,6 +175,7 @@ function subscriber() {
 
 
 function update_nodes(node) {
+  // update the time of the node 
   var now = dayjs().format();
   nodes.find(x => x.id === node.id).time = now;
   console.log("This are the current nodes : ", nodes);
@@ -180,10 +183,12 @@ function update_nodes(node) {
 }
 
 setInterval(function () {
-
+  // This will prevent errors. It will only execute if there is at least on variable on the array
   if (typeof nodes !== 'undefined' && nodes.length > 0) {
+    // call the method to get the leader
     let currentLeader = set_leader();
     console.log("Id of the leader:", currentLeader.id);
+    // set the leader as true and as false the ones that are not the leader
     nodes.forEach(element => {
       if (element.id === currentLeader.id) {
         element.leader = true
@@ -191,6 +196,7 @@ setInterval(function () {
 
 
     });
+    // Check if the current node is the leader
     if (toSend.id == currentLeader.id) {
       checkNodes();
     }
@@ -199,7 +205,7 @@ setInterval(function () {
 }, 6000)
 
 function set_leader() {
-
+  // With .reduce we are going to get the maximun id
   const max = nodes.reduce(function (prev, current) {
     return (prev.id > current.id) ? prev : current
   })
@@ -208,12 +214,13 @@ function set_leader() {
 
 function checkNodes() {
   console.log("You are on the leader")
+  // Get the difference of the time and set to stop. The ones that have  been more than 2 minutes stopped.
   const date1 = dayjs();
   nodes.forEach(e => {
     const date2 = e.time
     let difference = date1.diff(date2, 'minute');
     console.log("This is the differnece", difference);
-    if (difference > 2) {
+    if (difference >= 2) {
       e.status = "stop";
     }
   });
