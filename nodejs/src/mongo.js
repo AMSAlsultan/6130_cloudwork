@@ -120,13 +120,13 @@ setInterval(function () {
         durable: false
       });
 
-      //channel.sendToQueue(queue, Buffer.from(msg));
+
       channel.sendToQueue(queue, Buffer.from(JSON.stringify(toSend)));
       console.log(" [x] Sent %s", JSON.stringify(toSend));
     });
     setTimeout(function () {
       connection.close();
-      //process.exit(0)
+
     }, 500);
   });
 
