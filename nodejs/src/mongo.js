@@ -51,7 +51,7 @@ var usersSchema = new Schema({
   titleID: Number,
   userAction: String,
   point_interaction: String,
-  type_interaction: Number,
+  type_interaction: String,
   dateTime: Date
 
 });
