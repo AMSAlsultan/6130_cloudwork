@@ -61,16 +61,19 @@ var usersModel = mongoose.model('Client', usersSchema, 'client');
 
 
 app.get('/', (req, res) => {
-  usersModel.find({}, 'Get users data', (err, user) => {
+  usersModel.find({}, 'Get users data', (err, client) => {
     if (err) return handleError(err);
-    res.send(JSON.stringify(user))
+    res.send(JSON.stringify(client))
   })
 })
 
 app.post('/', (req, res) => {
   var new_user_instance = new usersModel(req.body);
   new_user_instance.save(function (err) {
-    if (err) res.send('Error');
+    if (err) {
+      res.send('Error')
+      return
+    }
     res.send(JSON.stringify(req.body))
   });
 })
